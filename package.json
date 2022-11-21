@@ -1,0 +1,21 @@
+{
+  "name": "permid-tagger",
+  "version": "1.0.11",
+  "description": "A simple tagger for the permid.org API. Using intervals, it allows you to make up to 500 requests with one function call. Simply pass in a file of your choosing, pick a field which you would like to see tagged and the tagger will return a list of tags. When the tagger is finished, it will save the results to a file of your choosing.",
+  "main": "index.js",
+  "dependencies": {
+    "fs": "0.0.1-security",
+    "opencalais-tagging": "^2.2.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "permid",
+    "tagger",
+    "opencalais"
+  ],
+  "author": "Jack Schofield <jackschofield1@gmail.com> (",
+  "license": "ISC"
+}
