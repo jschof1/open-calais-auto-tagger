@@ -1,48 +1,27 @@
-const calais = require('opencalais-tagging');
-const fs = require('fs');
+const calais = require("opencalais-tagging");
 
 const tagger = async (filePath, valuesToAnalyse, apiToken) => {
-  let file = await fs.readFileSync(filePath, 'utf8');
-  let fileData = JSON.parse(file);
+  let fileData = filePath;
   let descriptions = [];
 
-  console.log('fileData', fileData);
+  const delay = (ms) => new Promise((res) => setTimeout(res, ms));
 
-  for (let i = 0; i < fileData.length; i++) {
+  let setLength = fileData.length >= 500 ? 500 : fileData.length;
+  for (let i = 0; i < setLength; i++) {
     let description = fileData[i][valuesToAnalyse];
     descriptions.push(description);
   }
-
   let arr = [];
   let i = -1;
 
-  const interval = setInterval(async () => {
+  for (const id of descriptions) {
     let arr2 = [];
-
     i += 1;
-
-    let lengthCheck = fileData.length >= 500 ? 500 : fileData.length;
-    // choose how many requests you want to make - REMEMBER you are limited to 500 per day
-    if (i === lengthCheck) {
-      // mutate file with new data
-      let tagsArr = arr
-        .map((d) => Object.keys(d).map((key) => d[key]))
-        .reduce((a, b) => a.concat(b), [])
-        .map((d) => d.map((e) => e.replace(/_/g, ' ')));
-
-      let newFile = fileData.map((d, i) => {
-        d['tags'] = tagsArr[i];
-        return d;
-      });
-      fs.writeFileSync('./fileWithTags.json', JSON.stringify(newFile));
-      clearInterval(interval);
-    }
     try {
       const options = {
-        content: descriptions[i],
+        content: id,
         accessToken: apiToken,
       };
-
       const allData = await calais.tag(options);
       delete allData.doc;
 
@@ -51,23 +30,31 @@ const tagger = async (filePath, valuesToAnalyse, apiToken) => {
 
       for (let x of allNames) {
         if (
-          x._type === 'Person' ||
-          x._type === 'Company' ||
-          x._type === 'Organization' ||
-          x._typeGroup === 'socialTag' ||
-          x._typeGroup === 'topics'
+          x._type === "Person" ||
+          x._type === "Company" ||
+          x._type === "Organization" ||
+          x._typeGroup === "socialTag" ||
+          x._typeGroup === "topics"
         ) {
           arr2.push(x.name);
         }
       }
-      return arr.push({ [i]: arr2 });
+      arr.push({ [i]: arr2 });
     } catch (err) {
-      return arr.push({ [i]: ['NO VALUE PROVIDED OR RETURNED'] });
+      arr.push({ [i]: ["NO VALUE PROVIDED OR RETURNED"] });
     }
-  }, 2000);
+    await delay(2000);
+  }
+  let tagsArr = arr
+    .map((d) => Object.keys(d).map((key) => d[key]))
+    .reduce((a, b) => a.concat(b), [])
+    .map((d) => d.map((e) => e.replace(/_/g, " ")));
+
+  let newFile = fileData.map((d, i) => {
+    d["tags"] = tagsArr[i];
+    return d;
+  });
+  return newFile;
 };
 
-
-module.exports = {
-  tagger
-};
+module.exports = tagger;
