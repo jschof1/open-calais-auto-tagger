@@ -7,6 +7,10 @@
     "fs": "0.0.1-security",
     "opencalais-tagging": "^2.2.0"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jschof1/permid-tagger.git"
+  },
   "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
