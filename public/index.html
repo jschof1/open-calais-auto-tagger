@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calais Tagger</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css">
+  <link rel="stylesheet" href="styles.css">
+  <!-- Add the following lines inside the <head> tag -->
+<script>
+    async function submitData() {
+      const jsonInput = document.getElementById("jsonInput");
+      const valueToAnalyse = document.getElementById("valueToAnalyse");
+      const apiToken = document.getElementById("apiToken");
+      const jsonOutput = document.getElementById("jsonOutput");
+  
+      const response = await fetch("/tagger", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          data: JSON.parse(jsonInput.value),
+          valueToAnalyse: valueToAnalyse.value,
+          apiToken: apiToken.value,
+        }),
+      });
+  
+      if (response.ok) {
+        const taggedData = await response.json();
+        jsonOutput.value = JSON.stringify(taggedData, null, 2);
+      } else {
+        jsonOutput.value = "Error tagging data";
+      }
+    }
+  </script>
+</head>
+<body>
+  <div class="container">
+    <h1>Calais Tagger</h1>
+    <label for="jsonInput">Paste your JSON:</label>
+    <textarea id="jsonInput" rows="10"></textarea>
+    <label for="valueToAnalyse">Value to Analyse:</label>
+    <input type="text" id="valueToAnalyse" />
+    <label for="apiToken">API Token:</label>
+    <input type="text" id="apiToken" />
+    <button id="submitBtn" onclick="submitData()">Submit</button>
+    <label for="jsonOutput">Tagged JSON:</label>
+    <textarea id="jsonOutput" rows="10" readonly></textarea>
+  </div>
+  <script src="tagger.js"></script>
+</body>
+</html>

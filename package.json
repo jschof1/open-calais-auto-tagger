@@ -4,14 +4,15 @@
   "description": "A simple tagger for the permid.org API. Using intervals, it allows you to make up to 500 requests with one function call. Simply pass in a file of your choosing, pick a field which you would like to see tagged and the tagger will return a list of tags. When the tagger is finished, it will save the results to a file of your choosing.",
   "main": "index.js",
   "dependencies": {
+    "body-parser": "^1.20.2",
+    "express": "^4.18.2",
     "fs": "0.0.1-security",
     "opencalais-tagging": "^2.2.0"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/jschof1/permid-tagger.git"
+    "url": "git+https://github.com/jschof1/permid-tagger.git"
   },
-  "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -20,6 +21,10 @@
     "tagger",
     "opencalais"
   ],
-  "author": "Jack Schofield <jackschofield1@gmail.com> (",
-  "license": "ISC"
+  "author": "Jack Schofield <jackschofield1@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jschof1/permid-tagger/issues"
+  },
+  "homepage": "https://github.com/jschof1/permid-tagger#readme"
 }
