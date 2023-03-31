@@ -37,7 +37,26 @@
 </head>
 <body>
   <div class="container">
-    <h1>Calais Tagger</h1>
+      <h1>Tagging App</h1>
+    <p>
+        This application is a simple tagging app that helps you extract relevant tags from your input data using the Open Calais API. You can use it to find information about persons, companies, organizations, social tags, and topics present in your data.
+    </p>
+    <p>
+        To use the app, you need to send a POST request to the <code>/tagger</code> endpoint with the following JSON data:
+    </p>
+    <pre>
+{
+  "data": [...],           // Array of objects to analyze
+  "valueToAnalyse": "...", // Property of the object to be analyzed
+  "apiToken": "..."        // Your Open Calais API token
+}
+    </pre>
+    <p>
+        The app will process your data and return an array of objects with an additional <code>tags</code> property containing the extracted tags.
+    </p>
+    <p>
+        Note: Due to API limitations, you may need to wait between requests to avoid errors. Please adjust your request rate accordingly.
+    </p>
     <label for="jsonInput">Paste your JSON:</label>
     <textarea id="jsonInput" rows="10"></textarea>
     <label for="valueToAnalyse">Value to Analyse:</label>
